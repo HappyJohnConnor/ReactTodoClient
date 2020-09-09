@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 
 const Item = props => {
-    const todo = props.todo;
+    const todo = props.item;
     const [inputText, setInputtext] = useState('');
     const [editing, setEditMode] = useState(false);
 
-    const removeTodo = () => props.removeTodo(todo['id']);
+    const remove = () => props.remove(todo['id']);
     const handleDoneClick = () => {
         //edit todo item
-        props.editTodo(todo.id, inputText);
+        props.edit(todo.id, inputText);
         //change to edit false
         setEditMode(!editing);
     };
@@ -27,7 +27,7 @@ const Item = props => {
             }
 
             <span
-                onClick={removeTodo}>Delete
+                onClick={remove}>Delete
             </span>
 
             {editing ?
