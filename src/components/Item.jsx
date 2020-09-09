@@ -54,7 +54,7 @@ const Item = props => {
                 <input id="time" type="time"
                     onChange={e => setTimeText(e.target.value)}
                     onKeyPress={e => {
-                        if (e.key == 'Enter') handleTimeClick(e);
+                        if (e.key === 'Enter') handleTimeClick(e);
                         }
                     }
                 />

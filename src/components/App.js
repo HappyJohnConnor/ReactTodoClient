@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Form from './Form';
 import List from './List';
+import {displayAlert, convertTextToDate} from './utility';
 
 
 const App = () => {
@@ -14,7 +15,8 @@ const App = () => {
             {
                 id: new Date().getTime(),
                 text: e.target.title.value,
-                time: ''
+                time: '',
+                isDone: false
             });
         const newTodoList = [...todoList, newTodo];
         setTodoList(newTodoList);
@@ -41,22 +43,25 @@ const App = () => {
         setTodoList(newTodoList);
     };
 
-    const setTimeAlerm = (id, timeText) => {
+    const setTimeAlerm = (id, timetext) => {
         //convert timetext to datetime
-        const date = new Date();
-        date.setHours(timeText.substr(0, 2));
-        date.setMinutes(timeText.substr(-2, 2));
+        const date = convertTextToDate(timetext);
 
         const newTodoList = todoList.filter(item => {
             if (item.id === id) {
-                item.time = date;
+                const diff = date.getTime() - new Date().getTime();
+                if (diff > 0) {
+                    setTimeout(displayAlert, diff, item);
+                } else {
+                    item.isDone = true;
+                }
                 return item;
             } else {
                 return item;
             };
         });
         setTodoList(newTodoList);
-    }
+    };
     
     return (
             <div className="App">
