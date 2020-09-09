@@ -6,6 +6,9 @@ const Item = props => {
     const [editing, setEditMode] = useState(false);
     const [timeText, setTimeText] = useState('');
 
+    const today = new Date().toISOString().substr(0, 10);
+    const [dateText, setDateText] = useState(today);
+    
     const remove = () => props.remove(todo['id']);
     const handleDoneClick = () => {
         //edit todo item
@@ -13,14 +16,10 @@ const Item = props => {
         //change to edit false
         setEditMode(!editing);
     };
-    const handleTimeClick = (e) => {
+
+    const handleDatetimeClick = (e) => {
         e.preventDefault();
-        const timeTextPatter = /^([01]?[0-9]|2[0-3]):([0-5][0-9])$/;
-        if (!timeText.match(timeTextPatter)) {
-            return;
-        } else {
-            return props.setTimeAlerm(todo.id, timeText);
-        }
+        return props.setTimeAlerm(todo.id, dateText, timeText);
     }
 
     return (
@@ -50,24 +49,23 @@ const Item = props => {
                     Edit
                 </button>
             }
-            <span>
+
+            <form
+                onSubmit={handleDatetimeClick}
+                onKeyPress={e => {
+                    if (e.key === 'Enter') handleDatetimeClick(e);
+                    }
+                }>
+                <input id="date" type="date"
+                    defaultValue={today}
+                    onChange={e => setDateText(e.target.value)}
+                />
                 <input id="time" type="time"
                     onChange={e => setTimeText(e.target.value)}
-                    onKeyPress={e => {
-                        if (e.key === 'Enter') handleTimeClick(e);
-                        }
-                    }
                 />
-            </span>
-            
+                <input type="submit" value="Save" />
+            </form>
         </li>
-        /*
-        <div className="alertDropdown">
-        <img src="asset/icon/clock.svg" width="20" height="20" />
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" href="#">Action</a>
-        </div>
-        </div>*/
     )
 }
 

@@ -43,9 +43,10 @@ const App = () => {
         setTodoList(newTodoList);
     };
 
-    const setTimeAlerm = (id, timetext) => {
+    const setTimeAlerm = (id, dateText, timetext) => {
         //convert timetext to datetime
-        const date = convertTextToDate(timetext);
+        let date = new Date(dateText);
+        date = convertTextToDate(date, timetext);
 
         const newTodoList = todoList.filter(item => {
             if (item.id === id) {
