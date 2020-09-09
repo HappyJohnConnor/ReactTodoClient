@@ -1,13 +1,10 @@
 import React, { useState } from "react";
+import DateSetForm from './DateSetForm';
 
 const Item = props => {
     const todo = props.item;
     const [inputText, setInputtext] = useState('');
     const [editing, setEditMode] = useState(false);
-    const [timeText, setTimeText] = useState('');
-
-    const today = new Date().toISOString().substr(0, 10);
-    const [dateText, setDateText] = useState(today);
     
     const remove = () => props.remove(todo['id']);
     const handleDoneClick = () => {
@@ -16,11 +13,8 @@ const Item = props => {
         //change to edit false
         setEditMode(!editing);
     };
-
-    const handleDatetimeClick = (e) => {
-        e.preventDefault();
-        return props.setTimeAlerm(todo.id, dateText, timeText);
-    }
+    
+    const setTimeAlerm = props.setTimeAlerm;
 
     return (
         <li>
@@ -49,22 +43,11 @@ const Item = props => {
                     Edit
                 </button>
             }
-
-            <form
-                onSubmit={handleDatetimeClick}
-                onKeyPress={e => {
-                    if (e.key === 'Enter') handleDatetimeClick(e);
-                    }
-                }>
-                <input id="date" type="date"
-                    defaultValue={today}
-                    onChange={e => setDateText(e.target.value)}
-                />
-                <input id="time" type="time"
-                    onChange={e => setTimeText(e.target.value)}
-                />
-                <input type="submit" value="Save" />
-            </form>
+            <DateSetForm
+                todo={todo}
+                setTimeAlerm={setTimeAlerm}
+            />
+            
         </li>
     )
 }

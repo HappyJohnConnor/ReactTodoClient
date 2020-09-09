@@ -1,5 +1,5 @@
 import React, { Component, useState } from 'react';
-import Item from './Item';
+import Item from './TodoItem/Item';
 
 let style = {
     maxwidth: '700px',
