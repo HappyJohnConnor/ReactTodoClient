@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import Form from './Form';
-import List from './List';
-import {displayAlert, convertTextToDate} from './utility';
-import "../css/App.scss";
+import Item from './Item';
 
 const App = () => {
     const [todoList, setTodoList] = useState([]);
@@ -65,12 +63,18 @@ const App = () => {
             <div className="App">
                 <h1>Todo App</h1>
                 <Form handleAdd={handleAdd}></Form>
-                <List
-                    todos={todoList}
-                    removeTodo={removeTodo}
-                    editTodo={editTodo}
-                    setTodoAlerm={setTodoAlerm}
-                />
+                <ul>
+                    {todoList.map((todo, index) => {
+                        return (
+                            <Item
+                                key={index}
+                                todo={todo}
+                                removeTodo={removeTodo}
+                                editTodo={editTodo}
+                            />
+                        )
+                    })}
+                </ul >
             </div>
         
     );
