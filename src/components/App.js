@@ -13,7 +13,8 @@ const App = () => {
         const newTodo = (
             {
                 id: new Date().getTime(),
-                text: e.target.title.value
+                text: e.target.title.value,
+                time: ''
             });
         const newTodoList = [...todoList, newTodo];
         setTodoList(newTodoList);
@@ -39,6 +40,23 @@ const App = () => {
         })
         setTodoList(newTodoList);
     };
+
+    const setTimeAlerm = (id, timeText) => {
+        //convert timetext to datetime
+        const date = new Date();
+        date.setHours(timeText.substr(0, 2));
+        date.setMinutes(timeText.substr(-2, 2));
+
+        const newTodoList = todoList.filter(item => {
+            if (item.id === id) {
+                item.time = date;
+                return item;
+            } else {
+                return item;
+            };
+        });
+        setTodoList(newTodoList);
+    }
     
     return (
             <div className="App">
@@ -48,6 +66,7 @@ const App = () => {
                 todos={todoList}
                 removeTodo={removeTodo}
                 editTodo={editTodo}
+                setTimeAlerm={setTimeAlerm}
             />
             </div>
         

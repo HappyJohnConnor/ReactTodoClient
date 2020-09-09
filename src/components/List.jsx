@@ -19,6 +19,7 @@ const List = (props) => {
                         item={todo}
                         remove={props.removeTodo}
                         edit={props.editTodo}
+                        setTimeAlerm={props.setTimeAlerm}
                     />
                 )
             })}
