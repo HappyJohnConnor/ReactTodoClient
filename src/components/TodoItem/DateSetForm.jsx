@@ -1,33 +1,75 @@
 import React, { useState } from "react";
+import { convertTextToDate, toStringDatetime } from '../utility';
+import "../../css/DateSetForm.scss";
 
 const DateSetForm = props => {
     const todo = props.todo;
+    const [isTimeSet, toggleIsTimeSet] = useState(false);
+    const [ariaExpanded, toggleAriaExpanded] = useState(false);
     const [timeText, setTimeText] = useState('');
+    const [alermTimeText, setAlermTimeText] = useState('');
 
     const today = new Date().toISOString().substr(0, 10);
     const [dateText, setDateText] = useState(today);
-    const handleDatetimeClick = (e) => {
+
+    const handleSaveClick = (e) => {
         e.preventDefault();
-        return props.setTimeAlerm(todo.id, dateText, timeText);
+        //close dropdown
+        toggleAriaExpanded(!ariaExpanded);
+        if (timeText !== '') {
+            toggleIsTimeSet(true);
+            //convert timetext to datetime
+            let alermTime = new Date(dateText);
+            alermTime = convertTextToDate(alermTime, timeText);
+            setAlermTimeText(toStringDatetime(alermTime));
+            return props.setTodoAlerm(todo.id, alermTime);
+        } else {
+            return;
+        }
     }
 
     return (
-        <form
-            onSubmit={handleDatetimeClick}
-            onKeyPress={e => {
-                if (e.key === 'Enter') handleDatetimeClick(e);
-                }
-            }>
-            <input id="date" type="date"
-                defaultValue={today}
-                onChange={e => setDateText(e.target.value)}
-            />
-            <input id="time" type="time"
-                onChange={e => setTimeText(e.target.value)}
-            />
-            <input type="submit" value="Save" />
-        </form>
+        <div class="dropdown">
+            {isTimeSet ?
+                <span>{alermTimeText}</span>
+                :
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded={ariaExpanded}>
+                    Set alert
+                </button>
+            }
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <input id="date" type="date"
+                    className="dropdown-item"
+                    defaultValue={today}
+                    onChange={e => setDateText(e.target.value)}
+                />
+                <input id="time" type="time"
+                    className="dropdown-item"
+                    onChange={e => setTimeText(e.target.value)}
+                />
+                <span name="Save"
+                    onClick={handleSaveClick}>Save</span>
+            </div>
+        </div>
     )
 }
 
 export default DateSetForm;
+
+/*
+function hookComponent(WrappedComponent) {
+    return class extends React.Component {
+        componentDidMount() {
+            var dropdownMenu = document.getElementsByClassName('dropdown-menu');
+            dropdownMenu[0].addEventListener('click', function (e) {
+                e.stopPropagation();
+            });
+        }
+        render() {
+            return <WrappedComponent />
+        }
+    }
+}
+
+const EnhancedDateSetForm = hookComponent(DateSetForm);
+export default EnhancedDateSetForm;*/

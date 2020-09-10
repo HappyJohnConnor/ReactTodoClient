@@ -43,14 +43,11 @@ const App = () => {
         setTodoList(newTodoList);
     };
 
-    const setTimeAlerm = (id, dateText, timetext) => {
-        //convert timetext to datetime
-        let date = new Date(dateText);
-        date = convertTextToDate(date, timetext);
-
+    const setTodoAlerm = (id, alermTime) => {
         const newTodoList = todoList.filter(item => {
             if (item.id === id) {
-                const diff = date.getTime() - new Date().getTime();
+                item.time = alermTime.getTime();
+                const diff = alermTime.getTime() - new Date().getTime();
                 if (diff > 0) {
                     setTimeout(displayAlert, diff, item);
                 } else {
@@ -72,7 +69,7 @@ const App = () => {
                 todos={todoList}
                 removeTodo={removeTodo}
                 editTodo={editTodo}
-                setTimeAlerm={setTimeAlerm}
+                setTodoAlerm={setTodoAlerm}
             />
             </div>
         

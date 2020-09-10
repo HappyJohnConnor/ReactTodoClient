@@ -10,3 +10,13 @@ export function convertTextToDate(date, timetext) {
 
     return date;
 }
+
+export function toStringDatetime(date) {
+    /*
+    convert datetime to string like "Sep 9 12:10"
+    */
+    const datetext = date.toDateString().substr(4, 6);
+    const timetext = date.toTimeString().substr(0, 5);
+    const datetimeText = datetext + " " + timetext;
+    return datetimeText;
+}

@@ -14,7 +14,7 @@ const Item = props => {
         setEditMode(!editing);
     };
     
-    const setTimeAlerm = props.setTimeAlerm;
+    const setTodoAlerm = props.setTodoAlerm;
 
     return (
         <li>
@@ -45,7 +45,7 @@ const Item = props => {
             }
             <DateSetForm
                 todo={todo}
-                setTimeAlerm={setTimeAlerm}
+                setTodoAlerm={setTodoAlerm}
             />
             
         </li>
