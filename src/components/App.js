@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Form from './Form';
 import List from './List';
 import {displayAlert, convertTextToDate} from './utility';
-
+import "../css/App.scss";
 
 const App = () => {
     const [todoList, setTodoList] = useState([]);
@@ -63,14 +63,14 @@ const App = () => {
     
     return (
             <div className="App">
-            <h1>Todo App</h1>
-            <Form handleAdd={handleAdd}></Form>
-            <List
-                todos={todoList}
-                removeTodo={removeTodo}
-                editTodo={editTodo}
-                setTodoAlerm={setTodoAlerm}
-            />
+                <h1>Todo App</h1>
+                <Form handleAdd={handleAdd}></Form>
+                <List
+                    todos={todoList}
+                    removeTodo={removeTodo}
+                    editTodo={editTodo}
+                    setTodoAlerm={setTodoAlerm}
+                />
             </div>
         
     );

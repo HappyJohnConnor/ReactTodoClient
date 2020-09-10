@@ -11,7 +11,7 @@ let btn = {
 
 const List = (props) => {
     return (
-            <ul>
+            <ul className="list-group">
             {props.todos.map((todo, index) => {
                 return (
                     <Item
