@@ -4,7 +4,7 @@ import "../../css/Item.scss";
 
 const Item = props => {
     const todo = props.item;
-    const [inputText, setInputtext] = useState('');
+    const [inputText, setInputtext] = useState(todo.text);
     const [editing, setEditMode] = useState(false);
     
     const remove = () => props.remove(todo['id']);
@@ -24,7 +24,7 @@ const Item = props => {
                 {editing ?
                     //Todo title Box
                     <input
-                        id="titleBox"
+                        id="titleInput"
                         type="text"
                         defaultValue={todo.text}
                         onChange={e => setInputtext(e.target.value)} />
@@ -42,7 +42,6 @@ const Item = props => {
                         <button
                             type="button"
                             className="btn btn-info"
-                            //onClick={() => props.editTodo(props.index, document.getElementById('titleBox').value)}>Done
                             onClick={handleDoneClick}>Done
                         </button> :
                         <button

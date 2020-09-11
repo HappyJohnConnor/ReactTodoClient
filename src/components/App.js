@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import Form from './Form';
 import List from './List';
+import { displayAlert } from './utility';
+import '../css/App.scss';
 
 
 const App = () => {
@@ -68,9 +70,9 @@ const App = () => {
                 todos={todoList}
                 removeTodo={removeTodo}
                 editTodo={editTodo}
+                setTodoAlerm={setTodoAlerm}
             />
             </div>
-        
     );
 }
 

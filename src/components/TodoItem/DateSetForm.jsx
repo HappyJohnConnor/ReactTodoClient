@@ -29,15 +29,15 @@ const DateSetForm = props => {
     }
 
     return (
-        <div class="dateSetForm btn-group" role="group">
+        <div className="dateSetForm btn-group" role="group">
             {isTimeSet ?
                 <span id="alermText">{alermTimeText}</span>
                 :
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded={ariaExpanded} data-offset="-100,0">
+                <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded={ariaExpanded} data-offset="-100,0">
                     Set alert
                 </button>
             }
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <input id="date" type="date"
                     className="dropdown-item"
                     defaultValue={today}
