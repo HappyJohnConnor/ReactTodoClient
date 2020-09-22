@@ -6,6 +6,7 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
+    "eslint-plugin-react": "^7.20.6",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.3"
@@ -14,10 +15,10 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
+    "eject": "react-scripts eject",
+    "lint": "./node_modules/.bin/eslint ./src",
+    "pretty": "prettier --write '**/*.{js,jsx,json}' '!node_modules/**'",
+    "postpretty": "yarn lint --fix"
   },
   "browserslist": {
     "production": [
@@ -32,11 +33,18 @@
     ]
   },
   "devDependencies": {
+    "@material-ui/core": "^4.11.0",
+    "@material-ui/icons": "^4.9.1",
+    "babel-eslint": "^10.1.0",
     "css-loader": "^4.3.0",
+    "eslint": "^7.9.0",
+    "eslint-config-airbnb": "^18.2.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.22.0",
+    "prettier": "^2.1.2",
     "sass": "^1.26.10",
     "sass-loader": "^10.0.2",
     "style-loader": "^1.2.1",
-    "webpack": "^4.42.0",
     "webpack-cli": "^3.3.12"
   }
 }
