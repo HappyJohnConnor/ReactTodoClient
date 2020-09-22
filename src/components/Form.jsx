@@ -1,26 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import InputBase from '@material-ui/core/InputBase';
-import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import SearchIcon from '@material-ui/icons/Search';
-import Button from '@material-ui/core/Button';
+import ButtonBase from '@material-ui/core/Button';
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    margin: '1rem auto',
     padding: '2px 4px',
     display: 'flex',
     alignItems: 'center',
-    width: 400,
+    maxWidth: '400px',
   },
   input: {
     marginLeft: theme.spacing(1),
     flex: 1,
-  },
-  iconButton: {
-    padding: 10,
   },
   divider: {
     height: 28,
@@ -28,21 +22,29 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Form = (porps) => {
+const Form = (props) => {
   const classes = useStyles();
-  /*
-    <form >
-        <div>
-            <input name="title" type="text" placeholder="add your todo"/>
-            <input type="submit" value="Add" />
-        </div>
-    </form>*/
+  const [inputText, setInputText] = useState('');
+  const handleAdd = (e) => {
+    e.preventDefault();
+    props.handleAdd(inputText);
+    setInputText('');
+  };
+  const handleInputChange = (e) => {
+    setInputText(e.target.value);
+  };
+
   return (
-    <Paper component="form" className={classes.root} onSubmit={porps.handleAdd}>
-      <InputBase className={classes.input} placeholder="Add todo" />
-      <Button type="submit" variant="contained">
+    <Paper component="form" className={classes.root} onSubmit={handleAdd}>
+      <InputBase
+        className={classes.input}
+        value={inputText}
+        placeholder="Add todo"
+        onChange={handleInputChange}
+      />
+      <ButtonBase type="submit" variant="contained" color="secondary">
         Add
-      </Button>
+      </ButtonBase>
     </Paper>
   );
 };

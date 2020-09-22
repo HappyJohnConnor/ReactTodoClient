@@ -1,8 +1,18 @@
 import React, { useState } from 'react';
 import { convertTextToDate, toStringDatetime } from '../utility';
-import '../../css/DateSetForm.scss';
+import '../../style/DateSetForm.scss';
+import { makeStyles } from '@material-ui/core/styles';
+import AlarmIcon from '@material-ui/icons/Alarm';
+import Button from '@material-ui/core/Button';
+
+const useStyles = makeStyles(() => ({
+  doneButton: {
+    alignItems: 'flex-end',
+  },
+}));
 
 const DateSetForm = (props) => {
+  const classes = useStyles();
   const todo = props.todo;
   const [isTimeSet, toggleIsTimeSet] = useState(false);
   const [ariaExpanded, toggleAriaExpanded] = useState(false);
@@ -33,18 +43,15 @@ const DateSetForm = (props) => {
       {isTimeSet ? (
         <span id="alermText">{alermTimeText}</span>
       ) : (
-        <button
-          className="btn btn-secondary dropdown-toggle"
-          type="button"
+        <AlarmIcon
           id="dropdownMenuButton"
           data-toggle="dropdown"
           aria-haspopup="true"
           aria-expanded={ariaExpanded}
-          data-offset="-100,0"
-        >
-          Set alert
-        </button>
+          data-offset="-200,0"
+        />
       )}
+
       <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
         <input
           id="date"
@@ -59,9 +66,14 @@ const DateSetForm = (props) => {
           className="dropdown-item"
           onChange={(e) => setTimeText(e.target.value)}
         />
-        <span name="Save" onClick={handleSaveClick}>
+        <Button
+          color="primary"
+          name="Save"
+          className={classes.doneButton}
+          onClick={handleSaveClick}
+        >
           Save
-        </span>
+        </Button>
       </div>
     </div>
   );

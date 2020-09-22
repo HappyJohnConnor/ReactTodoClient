@@ -1,46 +1,40 @@
 import React, { useState } from 'react';
 import Form from './Form';
-import '../css/App.scss';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
+import Container from '@material-ui/core/Container';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
 import { displayAlert } from './utility';
-import List from './List';
+import TodoList from './TodoList';
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
+  },
+  title: {
+    flexGrow: 1,
+  },
+}));
 
 const App = () => {
-  const useStyles = makeStyles((theme) => ({
-    root: {
-      flexGrow: 1,
-    },
-    menuButton: {
-      marginRight: theme.spacing(2),
-    },
-    title: {
-      flexGrow: 1,
-    },
-  }));
-
   const classes = useStyles();
   const [todoList, setTodoList] = useState([]);
 
   // add todo
-  const handleAdd = (e) => {
-    // prevent to redirect
-    e.preventDefault();
+  const handleAdd = (inputText) => {
     const newTodo = {
       id: new Date().getTime(),
-      text: e.target.title.value,
+      text: inputText,
       time: '',
       isDone: false,
     };
     const newTodoList = [...todoList, newTodo];
     setTodoList(newTodoList);
-    // empty the value of the input
-    e.target.title.value = '';
   };
 
   const removeTodo = (id) => {
@@ -86,13 +80,15 @@ const App = () => {
           <Button color="inherit">Login</Button>
         </Toolbar>
       </AppBar>
-      <Form handleAdd={handleAdd} />
-      <List
-        todos={todoList}
-        removeTodo={removeTodo}
-        editTodo={editTodo}
-        setTodoAlerm={setTodoAlerm}
-      />
+      <Container maxWidth="md">
+        <Form className="Form" handleAdd={handleAdd} />
+        <TodoList
+          todos={todoList}
+          removeTodo={removeTodo}
+          editTodo={editTodo}
+          setTodoAlerm={setTodoAlerm}
+        />
+      </Container>
     </div>
   );
 };

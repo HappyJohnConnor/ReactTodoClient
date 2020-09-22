@@ -1,9 +1,10 @@
 import React from 'react';
 import Item from './TodoItem/Item';
+import List from '@material-ui/core/List';
 
-const List = (props) => {
+const TodoList = (props) => {
   return (
-    <ul className="list-group">
+    <List className="list-group">
       {props.todos.map((todo, index) => {
         return (
           <Item
@@ -15,8 +16,8 @@ const List = (props) => {
           />
         );
       })}
-    </ul>
+    </List>
   );
 };
 
-export default List;
+export default TodoList;

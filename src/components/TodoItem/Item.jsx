@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 import DateSetForm from './DateSetForm';
-import '../../css/Item.scss';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import TextField from '@material-ui/core/TextField';
+import Grid from '@material-ui/core/Grid';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
+import DoneIcon from '@material-ui/icons/Done';
 
 const Item = (props) => {
   const todo = props.item;
@@ -18,47 +24,35 @@ const Item = (props) => {
   const setTodoAlerm = props.setTodoAlerm;
 
   return (
-    <li className="list-group-item">
-      <div className="container">
-        <div className="titleBox">
-          {editing ? (
-            //Todo title Box
-            <input
-              id="titleInput"
-              type="text"
-              defaultValue={todo.text}
-              onChange={(e) => setInputtext(e.target.value)}
-            />
-          ) : (
-            <span>{todo.text}</span>
-          )}
-        </div>
-        <div className="todo-btn-group btn-group btn-group-sm" role="group">
-          <button className="btn btn-danger" onClick={remove}>
-            Delete
-          </button>
-
-          {editing ? (
-            <button
-              type="button"
-              className="btn btn-info"
-              onClick={handleDoneClick}
-            >
-              Done
-            </button>
-          ) : (
-            <button
-              type="button"
-              className="btn btn-info"
-              onClick={() => setEditMode(!editing)}
-            >
-              Edit
-            </button>
-          )}
-          <DateSetForm todo={todo} setTodoAlerm={setTodoAlerm} />
-        </div>
+    <ListItem className="list-group-item">
+      <div className="titleBox">
+        {editing ? (
+          //Todo title Box
+          <TextField
+            id="titleInput"
+            defaultValue={todo.text}
+            onChange={(e) => setInputtext(e.target.value)}
+          />
+        ) : (
+          <ListItemText>{todo.text}</ListItemText>
+        )}
       </div>
-    </li>
+      <Grid container justify="flex-end" spacing={1}>
+        <Grid item>
+          <DeleteIcon onClick={remove} />
+        </Grid>
+        <Grid item>
+          {editing ? (
+            <DoneIcon onClick={handleDoneClick} />
+          ) : (
+            <EditIcon onClick={() => setEditMode(!editing)} />
+          )}
+        </Grid>
+        <Grid item>
+          <DateSetForm todo={todo} setTodoAlerm={setTodoAlerm} />
+        </Grid>
+      </Grid>
+    </ListItem>
   );
 };
 
