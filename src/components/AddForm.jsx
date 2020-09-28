@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useDispatch } from '../store';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import InputBase from '@material-ui/core/InputBase';
@@ -22,14 +23,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Form = (props) => {
+const AddForm = () => {
+  const dispatch = useDispatch();
   const classes = useStyles();
   const [inputText, setInputText] = useState('');
   const handleAdd = (e) => {
     e.preventDefault();
-    props.handleAdd(inputText);
+    addTodo();
     setInputText('');
   };
+  const addTodo = () => {
+    if (inputText === '') {
+      return;
+    } else {
+      dispatch({ type: 'ADD_TODO', text: inputText });
+    }
+  }
   const handleInputChange = (e) => {
     setInputText(e.target.value);
   };
@@ -49,4 +58,4 @@ const Form = (props) => {
   );
 };
 
-export default Form;
+export default React.memo(AddForm);

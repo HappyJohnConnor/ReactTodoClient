@@ -1,18 +1,21 @@
+import { useTrackedState } from '../store';
 import React from 'react';
 import Item from './TodoItem/Item';
 import List from '@material-ui/core/List';
 
-const TodoList = (props) => {
+const TodoList = () => {
+  const state = useTrackedState();
+
   return (
     <List className="list-group">
-      {props.todos.map((todo, index) => {
+      {state.todos.map(({id, text, time, isDone}) => {
         return (
           <Item
-            key={index}
-            item={todo}
-            remove={props.removeTodo}
-            edit={props.editTodo}
-            setTodoAlerm={props.setTodoAlerm}
+            key={id}
+            id={id}
+            text={text}
+            time={time}
+            isDone={isDone}
           />
         );
       })}
@@ -20,4 +23,4 @@ const TodoList = (props) => {
   );
 };
 
-export default TodoList;
+export default React.memo(TodoList);

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { convertTextToDate, toStringDatetime } from '../utility';
+import { useDispatch } from '../../store';
+import { convertTextToDate, toStringDatetime } from '../../utility';
 import '../../style/DateSetForm.scss';
 import { makeStyles } from '@material-ui/core/styles';
 import AlarmIcon from '@material-ui/icons/Alarm';
@@ -11,9 +12,10 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const DateSetForm = (props) => {
+const DateSetForm = ({ text, time, id }) => {
+  const dispatch = useDispatch();
   const classes = useStyles();
-  const todo = props.todo;
+
   const [isTimeSet, toggleIsTimeSet] = useState(false);
   const [ariaExpanded, toggleAriaExpanded] = useState(false);
   const [timeText, setTimeText] = useState('');
@@ -22,6 +24,19 @@ const DateSetForm = (props) => {
   const today = new Date().toISOString().substr(0, 10);
   const [dateText, setDateText] = useState(today);
 
+  const setAlerm = () => {
+    dispatch({ type: 'SET_ALERM', id: id, time: time });
+    const diff = time.getTime() - new Date().getTime();
+    if (diff > 0) {
+        setTimeout( () => {
+          alert(text);
+          dispatch({ type: 'TOGGLE_DONE', id: id });
+        }, diff);
+    } else {
+        dispatch({type: 'TOGGLE_DONE', id: id});
+    }
+  }
+
   const handleSaveClick = (e) => {
     e.preventDefault();
     //close dropdown
@@ -29,17 +44,16 @@ const DateSetForm = (props) => {
     if (timeText !== '') {
       toggleIsTimeSet(true);
       //convert timetext to datetime
-      let alermTime = new Date(dateText);
-      alermTime = convertTextToDate(alermTime, timeText);
-      setAlermTimeText(toStringDatetime(alermTime));
-      return props.setTodoAlerm(todo.id, alermTime);
+      time = convertTextToDate(new Date(dateText), timeText);
+      setAlermTimeText(toStringDatetime(time));
+      setAlerm();
     } else {
       return;
     }
   };
 
   return (
-    <div className="dateSetForm btn-group" role="group">
+    <div className="dateSetForm btn-group z-idnex20" role="group">
       {isTimeSet ? (
         <span id="alermText">{alermTimeText}</span>
       ) : (
@@ -80,21 +94,3 @@ const DateSetForm = (props) => {
 };
 
 export default DateSetForm;
-
-/*
-function hookComponent(WrappedComponent) {
-    return class extends React.Component {
-        componentDidMount() {
-            var dropdownMenu = document.getElementsByClassName('dropdown-menu');
-            dropdownMenu[0].addEventListener('click', function (e) {
-                e.stopPropagation();
-            });
-        }
-        render() {
-            return <WrappedComponent />
-        }
-    }
-}
-
-const EnhancedDateSetForm = hookComponent(DateSetForm);
-export default EnhancedDateSetForm;*/
