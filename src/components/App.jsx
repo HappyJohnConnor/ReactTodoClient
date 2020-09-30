@@ -36,12 +36,11 @@ const App = () => {
           </Toolbar>
         </AppBar>
         <Container maxWidth="md">
-          <AddForm className="Form"/>
+          <AddForm className="Form" />
           <TodoList />
         </Container>
       </div>
     </Provider>
-    
   );
 };
 

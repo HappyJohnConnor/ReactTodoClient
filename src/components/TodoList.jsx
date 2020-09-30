@@ -8,15 +8,9 @@ const TodoList = () => {
 
   return (
     <List className="list-group">
-      {state.todos.map(({id, text, time, isDone}) => {
+      {state.todos.map(({ id, text, time, isDone }) => {
         return (
-          <Item
-            key={id}
-            id={id}
-            text={text}
-            time={time}
-            isDone={isDone}
-          />
+          <Item key={id} id={id} text={text} time={time} isDone={isDone} />
         );
       })}
     </List>

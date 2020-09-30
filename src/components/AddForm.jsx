@@ -38,7 +38,7 @@ const AddForm = () => {
     } else {
       dispatch({ type: 'ADD_TODO', text: inputText });
     }
-  }
+  };
   const handleInputChange = (e) => {
     setInputText(e.target.value);
   };

@@ -11,6 +11,13 @@ export function convertTextToDate(date, timetext) {
   return date;
 }
 
+export function setSecondsToZero(date) {
+  date.setSeconds(0);
+  date.setMilliseconds(0);
+
+  return date;
+}
+
 export function toStringDatetime(date) {
   /*
     convert datetime to string like "Sep 9 12:10"

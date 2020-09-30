@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from '../../store';
-import DateSetForm from './DateSetForm';
+import DateFormDialog from './DateFormDialog';
 import { makeStyles } from '@material-ui/core/styles';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 const Item = ({ id, text, time, isDone }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  
+
   const [inputText, setInputtext] = useState(text);
   const [editing, setEditMode] = useState(false);
 
@@ -29,10 +29,9 @@ const Item = ({ id, text, time, isDone }) => {
     dispatch({ type: 'DELETE_TODO', id: id });
   };
   const editTodo = () => {
-    dispatch({ type: 'EDIT_TODO', id: id, text: inputText })
+    dispatch({ type: 'EDIT_TODO', id: id, text: inputText });
   };
-  
-  
+
   const handleDoneClick = () => {
     //edit todo item
     editTodo();
@@ -51,18 +50,19 @@ const Item = ({ id, text, time, isDone }) => {
             onChange={(e) => setInputtext(e.target.value)}
           />
         ) : (
-            <ListItemText
-              secondary={
-                <React.Fragment>
+          <ListItemText
+            secondary={
+              <React.Fragment>
                 <Typography
-                    component="span"
-                    variant="body2"
-                    className={classes.inline}
-                >{text}
+                  component="span"
+                  variant="body2"
+                  className={classes.inline}
+                >
+                  {text}
                 </Typography>
               </React.Fragment>
-              }
-            />
+            }
+          />
         )}
       </div>
       <ListItemSecondaryAction>
@@ -78,11 +78,10 @@ const Item = ({ id, text, time, isDone }) => {
             )}
           </Grid>
           <Grid item>
-            <DateSetForm text={text} time={time} id={id}/>
+            <DateFormDialog text={text} time={time} id={id} />
           </Grid>
         </Grid>
       </ListItemSecondaryAction>
-      
     </ListItem>
   );
 };
