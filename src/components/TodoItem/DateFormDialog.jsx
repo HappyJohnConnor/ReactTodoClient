@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useDispatch } from '../../store';
 import { toStringDatetime, setSecondsToZero } from '../../utility';
 import '../../style/DateSetForm.scss';
-import { makeStyles } from '@material-ui/core/styles';
 import AlarmIcon from '@material-ui/icons/Alarm';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
