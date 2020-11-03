@@ -16,7 +16,7 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 
-const DateFormDialog = ({ text, time, id }) => {
+const DateFormDialog = ({ title, alerm, id }) => {
   const dispatch = useDispatch();
 
   const [open, setOpen] = React.useState(false);
@@ -36,11 +36,11 @@ const DateFormDialog = ({ text, time, id }) => {
   };
 
   const setAlerm = () => {
-    dispatch({ type: 'SET_ALERM', id: id, time: selectedDate });
+    dispatch({ type: 'SET_ALERM', id: id, alerm: selectedDate });
     const diff = selectedDate.getTime() - new Date().getTime();
     if (diff > 0) {
       setTimeout(() => {
-        alert(text);
+        alert(title);
         dispatch({ type: 'TOGGLE_DONE', id: id });
       }, diff);
     } else {

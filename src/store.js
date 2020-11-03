@@ -5,21 +5,24 @@ const initialState = {
   todos: [
     {
       id: 1,
-      text: 'Wash dishes',
-      time: '',
-      isDone: false,
+      title: 'Wash dishes',
+      body: '',
+      alerm: '',
+      isCompleted: false,
     },
     {
       id: 2,
-      text: 'Study JS',
-      time: '',
-      isDone: false,
+      title: 'Study JS',
+      body: '',
+      alerm: '',
+      isCompleted: false,
     },
     {
       id: 3,
-      text: 'Buy ticket',
-      time: '',
-      isDone: false,
+      title: 'Buy ticket',
+      body: '',
+      alerm: '',
+      isCompleted: false,
     },
   ],
 };
@@ -33,9 +36,9 @@ const reducer = (state, action) => {
         ...state.todos,
         {
           id: new Date().getTime(),
-          text: action.text,
-          time: '',
-          isDone: false,
+          title: action.text,
+          alerm: '',
+          isCompleted: false,
         },
       ],
     };
@@ -47,17 +50,17 @@ const reducer = (state, action) => {
   case 'EDIT_TODO':
     return {
       ...state,
-      todos: state.todos.map((todo) => (todo.id === action.id ? { ...todo, text: action.text } : todo)),
+      todos: state.todos.map((todo) => (todo.id === action.id ? { ...todo, title: action.text } : todo)),
     };
   case 'TOGGLE_DONE':
     return {
       ...state,
-      todos: state.todos.map((todo) => (todo.id === action.id ? { ...todo, isDone: !todo.isDone } : todo)),
+      todos: state.todos.map((todo) => (todo.id === action.id ? { ...todo, isCompleted: !todo.isCompleted } : todo)),
     };
   case 'SET_ALERM':
     return {
       ...state,
-      todos: state.todos.map((todo) => (todo.id === action.id ? { ...todo, time: action.time } : todo)),
+      todos: state.todos.map((todo) => (todo.id === action.id ? { ...todo, alerm: action.time } : todo)),
     };
   default:
     return state;

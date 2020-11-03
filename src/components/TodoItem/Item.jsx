@@ -18,18 +18,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Item = ({ id, text, time, isDone }) => {
+const Item = ({ id, title, alerm, isCompleted }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const [inputText, setInputtext] = useState(text);
+  const [inputText, setInputtext] = useState(title);
   const [editing, setEditMode] = useState(false);
 
   const deleteTodo = () => {
     dispatch({ type: 'DELETE_TODO', id: id });
   };
   const editTodo = () => {
-    dispatch({ type: 'EDIT_TODO', id: id, text: inputText });
+    dispatch({ type: 'EDIT_TODO', id: id, title: inputText });
   };
 
   const handleDoneClick = () => {
@@ -39,6 +39,10 @@ const Item = ({ id, text, time, isDone }) => {
     setEditMode(!editing);
   };
 
+  const handleChange = (e) => {
+    setInputtext(e.target.value);
+  }
+
   return (
     <ListItem className="list-group-item">
       <div className="titleBox">
@@ -46,8 +50,8 @@ const Item = ({ id, text, time, isDone }) => {
           //Todo title Box
           <TextField
             id="titleInput"
-            defaultValue={text}
-            onChange={(e) => setInputtext(e.target.value)}
+            defaultValue={title}
+            onChange={handleChange}
           />
         ) : (
           <ListItemText
@@ -55,10 +59,9 @@ const Item = ({ id, text, time, isDone }) => {
               <React.Fragment>
                 <Typography
                   component="span"
-                  variant="body2"
                   className={classes.inline}
                 >
-                  {text}
+                  {inputText}
                 </Typography>
               </React.Fragment>
             }
@@ -78,7 +81,7 @@ const Item = ({ id, text, time, isDone }) => {
             )}
           </Grid>
           <Grid item>
-            <DateFormDialog text={text} time={time} id={id} />
+            <DateFormDialog title={title} alerm={alerm} id={id} />
           </Grid>
         </Grid>
       </ListItemSecondaryAction>

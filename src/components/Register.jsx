@@ -52,14 +52,11 @@ const Register = (props) => {
   const [signStatus, setSighStatus] = useState({ success: true, msg: '' });
 
   const handleChange = (event) => {
-    console.log(event.target.name);
     setFormData({ ...formData, [event.target.name]: event.target.value });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('success');
-    console.log(formData);
     AuthService.register(
       formData.username,
       formData.email,
