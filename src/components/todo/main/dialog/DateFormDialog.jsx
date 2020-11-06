@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { useDispatch } from '../../store';
-import { toStringDatetime, setSecondsToZero } from '../../utility';
-import '../../style/DateSetForm.scss';
+import { useDispatch } from 'react-redux';
+import { toStringDatetime, setSecondsToZero } from '../../../../utility';
 import AlarmIcon from '@material-ui/icons/Alarm';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -41,10 +40,10 @@ const DateFormDialog = ({ title, alerm, id }) => {
     if (diff > 0) {
       setTimeout(() => {
         alert(title);
-        dispatch({ type: 'TOGGLE_DONE', id: id });
+        dispatch({ type: 'TOGGLE_TODO', id: id });
       }, diff);
     } else {
-      dispatch({ type: 'TOGGLE_DONE', id: id });
+      dispatch({ type: 'TOGGLE_TODO', id: id });
     }
   };
 

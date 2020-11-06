@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { Switch, Route, withRouter } from 'react-router-dom';
-import { Provider } from './store';
-import AuthService from './services/auth.service';
-import AddForm from './components/AddForm';
-import TodoList from './components/TodoList';
-import Login from './components/Login';
-import Register from './components/Register';
+import AuthService from '../services/auth.service';
+import AddForm from './todo/header/AddForm';
+import TodoList from './todo/main/TodoList';
+import Login from './Login';
+import Register from './Register';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Container from '@material-ui/core/Container';
@@ -78,25 +77,23 @@ const App = (props) => {
   };
 
   return (
-    <Provider>
-      <div className={classes.root}>
-        <AppBar position="static">
-          <Toolbar>
-            <Typography variant="h6" className={classes.title}>
-              Todo App
-            </Typography>
-            {user ? <IsLoggedIn /> : <NotLoggedIn />}
-          </Toolbar>
-        </AppBar>
-        <Container maxWidth="md">
-          <Switch>
-            <Route exact path={['/', '/home']} component={Main} />
-            <Route exact path="/login" component={Login} />
-            <Route exact path="/register" component={Register} />
-          </Switch>
-        </Container>
-      </div>
-    </Provider>
+    <div className={classes.root}>
+      <AppBar position="static">
+        <Toolbar>
+          <Typography variant="h6" className={classes.title}>
+            Todo App
+          </Typography>
+          {user ? <IsLoggedIn /> : <NotLoggedIn />}
+        </Toolbar>
+      </AppBar>
+      <Container maxWidth="md">
+        <Switch>
+          <Route exact path={['/', '/home']} component={Main} />
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/register" component={Register} />
+        </Switch>
+      </Container>
+    </div>
   );
 };
 

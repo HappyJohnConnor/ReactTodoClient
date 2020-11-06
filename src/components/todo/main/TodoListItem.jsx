@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useDispatch } from '../../store';
-import DateFormDialog from './DateFormDialog';
+import { useSelector, useDispatch } from 'react-redux';
+import DateFormDialog from './dialog/DateFormDialog';
 import { makeStyles } from '@material-ui/core/styles';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -18,7 +18,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Item = ({ id, title, alerm, isCompleted }) => {
+const selectTodoById = (state, todoId) => {
+  return state.todos.find((todo) => todo.id === todoId);
+};
+
+const TodoListItem = ({ id }) => {
+  const todo = useSelector((state) => selectTodoById(state, id));
+  const { title, completed, alerm } = todo;
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -41,7 +47,7 @@ const Item = ({ id, title, alerm, isCompleted }) => {
 
   const handleChange = (e) => {
     setInputtext(e.target.value);
-  }
+  };
 
   return (
     <ListItem className="list-group-item">
@@ -57,10 +63,7 @@ const Item = ({ id, title, alerm, isCompleted }) => {
           <ListItemText
             secondary={
               <React.Fragment>
-                <Typography
-                  component="span"
-                  className={classes.inline}
-                >
+                <Typography component="span" className={classes.inline}>
                   {inputText}
                 </Typography>
               </React.Fragment>
@@ -89,4 +92,4 @@ const Item = ({ id, title, alerm, isCompleted }) => {
   );
 };
 
-export default React.memo(Item);
+export default React.memo(TodoListItem);

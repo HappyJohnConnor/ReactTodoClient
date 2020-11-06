@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useDispatch } from '../store';
+import { useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import InputBase from '@material-ui/core/InputBase';
