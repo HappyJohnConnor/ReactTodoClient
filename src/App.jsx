@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Switch, Route, withRouter } from 'react-router-dom';
-import AuthService from '../services/auth.service';
-import AddForm from './todo/header/AddForm';
-import TodoList from './todo/main/TodoList';
-import Login from './Login';
-import Register from './Register';
+import AuthService from './services/auth.service';
+import AddForm from './components/todo/header/AddForm';
+import TodoList from './components/todo/main/TodoList';
+import Login from './components/Login';
+import Register from './components/Register';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Container from '@material-ui/core/Container';

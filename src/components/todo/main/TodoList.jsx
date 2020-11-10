@@ -1,8 +1,13 @@
 import React from 'react';
-import { useSelector, shallowEqual } from 'react-redux';
+import {
+  useSelector,
+  shallowEqual,
+  connect
+} from 'react-redux';
 import { Provider } from 'react-redux';
 
 import TodoListItem from './TodoListItem';
+import ContentService from '../../../services/content.service';
 import store from '../../../store';
 import List from '@material-ui/core/List';
 
@@ -22,4 +27,9 @@ const TodoList = () => {
   );
 };
 
-export default React.memo(TodoList);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setTodos: (todos) => dispatch({ type: 'SET_TODOS', payload: todos }),
+  }
+}
+export default connect(null, mapDispatchToProps)(TodoList);
