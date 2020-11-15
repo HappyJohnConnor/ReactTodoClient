@@ -1,17 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Switch, Route, withRouter } from 'react-router-dom';
+
 import AuthService from './services/auth.service';
 import AddForm from './components/todo/header/AddForm';
 import TodoList from './components/todo/main/TodoList';
 import Login from './components/Login';
 import Register from './components/Register';
+
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Container from '@material-ui/core/Container';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import { useEffect } from 'react';
 
 const useStyles = makeStyles((theme) => ({
   root: {

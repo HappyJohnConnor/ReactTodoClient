@@ -30,3 +30,4 @@ yarn-error.log*
 
 # personal stuff
 hoge.html
+*.log

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
+
 import { toStringDatetime, setSecondsToZero } from '../../../../utility';
+
 import AlarmIcon from '@material-ui/icons/Alarm';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -15,10 +17,8 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 
-const DateFormDialog = ({ title, alerm, id }) => {
-  const dispatch = useDispatch();
-
-  const [open, setOpen] = React.useState(false);
+const DateFormDialog = ({ title, alerm, id, toggleTodo }) => {
+  const [open, setOpen] = useState(false);
   const [isTimeSet, toggleIsTimeSet] = useState(false);
   const [alermTimeText, setAlermTimeText] = useState('');
   const [selectedDate, setSelectedDate] = React.useState(new Date());
@@ -35,15 +35,16 @@ const DateFormDialog = ({ title, alerm, id }) => {
   };
 
   const setAlerm = () => {
-    dispatch({ type: 'SET_ALERM', id: id, alerm: selectedDate });
+    const content = { id: id, alerm: selectedDate };
+    toggleTodo(content);
     const diff = selectedDate.getTime() - new Date().getTime();
     if (diff > 0) {
       setTimeout(() => {
         alert(title);
-        dispatch({ type: 'TOGGLE_TODO', id: id });
+        toggleTodo(content);
       }, diff);
     } else {
-      dispatch({ type: 'TOGGLE_TODO', id: id });
+      toggleTodo(content);
     }
   };
 
@@ -118,4 +119,14 @@ const DateFormDialog = ({ title, alerm, id }) => {
   );
 };
 
-export default DateFormDialog;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    toggleTodo: (id, alerm) =>
+      dispatch({
+        type: 'TOGGLE_TODO',
+        payload: { id: id, alerm: alerm },
+      }),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(DateFormDialog);

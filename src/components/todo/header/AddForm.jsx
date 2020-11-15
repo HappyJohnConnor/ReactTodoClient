@@ -36,7 +36,7 @@ const AddForm = () => {
     if (inputText === '') {
       return;
     } else {
-      dispatch({ type: 'ADD_TODO', title: inputText });
+      dispatch({ type: 'ADD_TODO', payload: inputText });
     }
   };
   const handleInputChange = (e) => {

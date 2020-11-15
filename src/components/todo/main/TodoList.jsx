@@ -1,21 +1,13 @@
 import React from 'react';
-import {
-  useSelector,
-  shallowEqual,
-  connect
-} from 'react-redux';
+import { connect } from 'react-redux';
 import { Provider } from 'react-redux';
 
 import TodoListItem from './TodoListItem';
-import ContentService from '../../../services/content.service';
 import store from '../../../store';
+
 import List from '@material-ui/core/List';
 
-const selectTodoIds = (state) => state.todos.map((todo) => todo.id);
-
-const TodoList = () => {
-  const todoIds = useSelector(selectTodoIds, shallowEqual);
-
+const TodoList = ({ todoIds }) => {
   const renderedListItems = todoIds.map((todoId) => {
     return <TodoListItem key={todoId} id={todoId} />;
   });
@@ -27,9 +19,9 @@ const TodoList = () => {
   );
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapStatetoProps = (state) => {
   return {
-    setTodos: (todos) => dispatch({ type: 'SET_TODOS', payload: todos }),
-  }
-}
-export default connect(null, mapDispatchToProps)(TodoList);
+    todoIds: state.todo.map((todo) => todo.id),
+  };
+};
+export default connect(mapStatetoProps, null)(TodoList);

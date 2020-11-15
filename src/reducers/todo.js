@@ -1,6 +1,10 @@
-/*
-https://redux.js.org/tutorials/fundamentals/part-5-ui-react
-*/
+import {
+  SET_TODO,
+  ADD_TODO,
+  TOGGLE_TODO,
+  DELETE_TODO,
+  EDIT_TODO,
+} from '../actions/types';
 
 const initialState = [
   {
@@ -31,47 +35,50 @@ function nextTodoId(todos) {
   return maxId + 1;
 }
 
-export default function todosReducer(state = initialState, action) {
-  switch (action.type) {
-  case 'ADD_TODO': {
+export default function (state = initialState, action) {
+  const { type, payload } = action;
+  switch (type) {
+  case SET_TODO:
+    return [ ...payload ];
+  case ADD_TODO:
+    console.log(payload);
     // Can return just the new todos array - no extra object around it
     return [
       ...state,
       {
         id: nextTodoId(state),
-        title: action.title,
+        title: payload,
         alerm: '',
         completed: false,
       },
     ];
-  }
-  case 'TOGGLE_TODO': {
+
+  case TOGGLE_TODO:
     return state.map((todo) => {
-      if (todo.id !== action.id) {
+      if (todo.id !== payload.id) {
         return todo;
       }
-
       return {
         ...todo,
+        alerm: payload.alerm,
         completed: !todo.completed,
       };
     });
-  }
-  case 'DELETE_TODO': {
-    return state.filter((todo) => todo.id !== action.id);
-  }
-  case 'EDIT_TODO': {
+
+  case DELETE_TODO:
+    return state.filter((todo) => todo.id !== payload);
+
+  case EDIT_TODO:
     return state.map((todo) => {
-      if (todo.id !== action.id) {
+      if (todo.id !== payload.id) {
         return todo;
       }
-
       return {
         ...todo,
-        title: action.title,
+        title: payload.title,
       };
     });
-  }
+
   default:
     return state;
   }

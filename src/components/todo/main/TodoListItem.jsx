@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, connect } from 'react-redux';
+
 import DateFormDialog from './dialog/DateFormDialog';
+
 import { makeStyles } from '@material-ui/core/styles';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -19,28 +21,21 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const selectTodoById = (state, todoId) => {
-  return state.todos.find((todo) => todo.id === todoId);
+  return state.todo.find((todo) => todo.id === todoId);
 };
 
-const TodoListItem = ({ id }) => {
+const TodoListItem = ({ id, deleteTodo, editTodo }) => {
+  const classes = useStyles();
+
   const todo = useSelector((state) => selectTodoById(state, id));
   const { title, completed, alerm } = todo;
-  const classes = useStyles();
-  const dispatch = useDispatch();
 
   const [inputText, setInputtext] = useState(title);
   const [editing, setEditMode] = useState(false);
 
-  const deleteTodo = () => {
-    dispatch({ type: 'DELETE_TODO', id: id });
-  };
-  const editTodo = () => {
-    dispatch({ type: 'EDIT_TODO', id: id, title: inputText });
-  };
-
   const handleDoneClick = () => {
     //edit todo item
-    editTodo();
+    editTodo(id, inputText);
     //change to edit false
     setEditMode(!editing);
   };
@@ -74,7 +69,7 @@ const TodoListItem = ({ id }) => {
       <ListItemSecondaryAction>
         <Grid container spacing={1}>
           <Grid item>
-            <DeleteIcon onClick={deleteTodo} />
+            <DeleteIcon onClick={() => deleteTodo(id)} />
           </Grid>
           <Grid item>
             {editing ? (
@@ -92,4 +87,19 @@ const TodoListItem = ({ id }) => {
   );
 };
 
-export default React.memo(TodoListItem);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    deleteTodo: (id) =>
+      dispatch({
+        type: 'DELETE_TODO',
+        payload: id,
+      }),
+    editTodo: (id, title) =>
+      dispatch({
+        type: 'EDIT_TODO',
+        payload: { id: id, title: title },
+      }),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(TodoListItem);

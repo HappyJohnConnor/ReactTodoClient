@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
-import AuthService from '../services/auth.service';
+import { useDispatch, useSelector } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+
+import { register } from '../actions/auth';
+
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -44,12 +48,16 @@ const useStyles = makeStyles((theme) => ({
 
 const Register = (props) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+
   const [formData, setFormData] = useState({
     email: '',
     password: '',
     username: '',
   });
-  const [signStatus, setSighStatus] = useState({ success: true, msg: '' });
+
+  const { isLoggedin } = useSelector((state) => state.auth);
+  const { message } = useSelector((state) => state.message);
 
   const handleChange = (event) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
@@ -57,25 +65,12 @@ const Register = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    AuthService.register(
-      formData.username,
-      formData.email,
-      formData.password
-    ).then(
-      (response) => {
-        props.history.push('/login');
+    dispatch(register(formData.username, formData.email, formData.password))
+      .then(() => {
+        props.history.push('/home');
         window.location.reload();
-      },
-      (error) => {
-        const errorMsg =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
-        setSighStatus({ success: false, msg: errorMsg });
-      }
-    );
+      })
+      .catch(() => {});
   };
 
   return (
@@ -90,10 +85,10 @@ const Register = (props) => {
         </Typography>
         <ValidatorForm className={classes.form} onSubmit={handleSubmit}>
           <Grid container spacing={2}>
-            {!signStatus.success && (
+            {message && (
               <Grid item xs={12}>
                 <Typography color="error" align="center">
-                  {signStatus.msg}
+                  {message}
                 </Typography>
               </Grid>
             )}

@@ -1,4 +1,9 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+
+import { login } from '../actions/auth';
+
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -10,7 +15,6 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import AuthService from '../services/auth.service';
 
 function Copyright() {
   return (
@@ -44,8 +48,11 @@ const useStyles = makeStyles((theme) => ({
 
 const Login = (props) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({ username: '', password: '' });
-  const [loginStatus, setErrorData] = useState({ success: true, msg: '' });
+
+  const { isLoggedIn } = useSelector((state) => state.auth);
+  const { message } = useSelector((state) => state.message);
 
   const handleChange = (event) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
@@ -53,23 +60,18 @@ const Login = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    AuthService.login(formData.username, formData.password).then(
-      () => {
+    dispatch(login(formData.username, formData.password))
+      .then(() => {
         props.history.push('/home');
         window.location.reload();
-      },
-      (error) => {
-        console.log(error);
-        const errorMsg =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
-        setErrorData({ success: false, msg: errorMsg });
-      }
-    );
+      })
+      .catch(() => {});
   };
+
+  if (isLoggedIn) {
+    return <Redirect to="/" />;
+  }
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -82,10 +84,10 @@ const Login = (props) => {
         </Typography>
         <form className={classes.form} onSubmit={handleSubmit}>
           <Grid container spacing={2}>
-            {!loginStatus.success && (
+            {message && (
               <Grid item xs={12}>
                 <Typography color="error" align="center">
-                  {loginStatus.msg}
+                  {message}
                 </Typography>
               </Grid>
             )}

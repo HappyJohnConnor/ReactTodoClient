@@ -24,11 +24,7 @@ const ContentService = () => {
 
   const getTodoById = (todoId) => {
     axios
-      .get(
-        `${API_URL}get`,
-        { data: { todoId } },
-        { headers: authHeader() }
-      )
+      .get(`${API_URL}get`, { data: { todoId } }, { headers: authHeader() })
       .then((todo) => todo);
   };
   const updateTodo = (todo) => {
