@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 import { login } from '../actions/auth';
+import { setTodo } from '../actions/todo';
 
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -65,7 +66,9 @@ const Login = (props) => {
         props.history.push('/home');
         window.location.reload();
       })
-      .catch(() => {});
+      .catch(() => {
+        console.log('you failed in loging');
+      });
   };
 
   if (isLoggedIn) {

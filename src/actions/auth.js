@@ -13,7 +13,7 @@ import AuthService from '../services/auth.service';
 export const register = (username, email, password) => (dispatch) => AuthService.register(username, email, password).then(
   (response) => {
     dispatch({ type: REGISTER_SUCCESS });
-
+    dispatch({ type: SET_MESSAGE, payload: null });
     return Promise.resolve();
   },
   (error) => {
@@ -30,15 +30,7 @@ export const register = (username, email, password) => (dispatch) => AuthService
 
 export const login = (username, password) => (dispatch) => AuthService.login(username, password).then(
   (data) => {
-    dispatch({
-      type: LOGIN_SUCCESS,
-      payload: { user: data },
-    });
-    dispatch({
-      type: SET_TODO,
-      payload: data.todos,
-    });
-
+    dispatch({ type: SET_MESSAGE, payload: null });
     return Promise.resolve();
   },
   (error) => {

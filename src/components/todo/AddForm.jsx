@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
+
+import { addTodo } from '../../actions/todo';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import InputBase from '@material-ui/core/InputBase';
@@ -23,22 +25,20 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AddForm = () => {
-  const dispatch = useDispatch();
+const AddForm = ({addTodo}) => {
   const classes = useStyles();
   const [inputText, setInputText] = useState('');
+
   const handleAdd = (e) => {
     e.preventDefault();
-    addTodo();
-    setInputText('');
-  };
-  const addTodo = () => {
     if (inputText === '') {
       return;
     } else {
-      dispatch({ type: 'ADD_TODO', payload: inputText });
+      addTodo({title: inputText});
     }
+    setInputText('');
   };
+  
   const handleInputChange = (e) => {
     setInputText(e.target.value);
   };
@@ -58,4 +58,12 @@ const AddForm = () => {
   );
 };
 
-export default React.memo(AddForm);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addTodo: (todo) => {
+      dispatch(addTodo(todo))
+    }
+  };
+};
+
+export default connect(null, mapDispatchToProps)(AddForm);

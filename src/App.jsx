@@ -1,18 +1,21 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Switch, Route, withRouter } from 'react-router-dom';
 
 import AuthService from './services/auth.service';
-import AddForm from './components/todo/header/AddForm';
-import TodoList from './components/todo/main/TodoList';
+import AddForm from './components/todo/AddForm';
+import TodoList from './components/todo/TodoList';
 import Login from './components/Login';
 import Register from './components/Register';
 
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
+import Alert from '@material-ui/lab/Alert';
 import Container from '@material-ui/core/Container';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import { SET_MESSAGE } from './actions/types';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,7 +28,10 @@ const useStyles = makeStyles((theme) => ({
 
 const App = (props) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const { message } = useSelector((state) => state.message);
   const [user, setUser] = useState(undefined);
+
   useEffect(() => {
     const user = AuthService.getCurrentUser();
     if (user) {
@@ -41,6 +47,10 @@ const App = (props) => {
     props.history.push('/login');
     window.location.reload();
   };
+
+  const handleClose = () => {
+    dispatch({ type: SET_MESSAGE, payload: null });
+  }
 
   const Main = () => {
     return (
@@ -87,6 +97,11 @@ const App = (props) => {
           {user ? <IsLoggedIn /> : <NotLoggedIn />}
         </Toolbar>
       </AppBar>
+      {message && (
+        <Alert onClose={handleClose} severity="error">
+          {message}
+        </Alert>
+      )}
       <Container maxWidth="md">
         <Switch>
           <Route exact path={['/', '/home']} component={Main} />

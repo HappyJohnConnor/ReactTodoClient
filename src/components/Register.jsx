@@ -67,7 +67,7 @@ const Register = (props) => {
     e.preventDefault();
     dispatch(register(formData.username, formData.email, formData.password))
       .then(() => {
-        props.history.push('/home');
+        props.history.push('/login');
         window.location.reload();
       })
       .catch(() => {});

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useSelector, connect } from 'react-redux';
 
-import DateFormDialog from './dialog/DateFormDialog';
+import DateFormDialog from './DateFormDialog';
+import { deleteTodo, editTodo } from '../../actions/todo';
 
 import { makeStyles } from '@material-ui/core/styles';
 import ListItem from '@material-ui/core/ListItem';
@@ -35,10 +36,32 @@ const TodoListItem = ({ id, deleteTodo, editTodo }) => {
 
   const handleDoneClick = () => {
     //edit todo item
-    editTodo(id, inputText);
+    editTodo({ ...todo, title: inputText });
     //change to edit false
     setEditMode(!editing);
   };
+
+  const handleDeleteClick = () => {
+    deleteTodo(id);
+  }
+
+  const handleSetAlermClick = (alerm) => {
+    const todo = {
+      id: id,
+      completed: !completed,
+      alerm: alerm
+    }
+    editTodo(todo);
+    const diff = alerm.getTime() - new Date().getTime();
+    if (diff > 0) {
+      setTimeout(() => {
+        alert(title);
+        editTodo({id:id, completed: !completed});
+      }, diff);
+    } else {
+      editTodo({id:id, completed: !completed});
+    }
+  }
 
   const handleChange = (e) => {
     setInputtext(e.target.value);
@@ -69,7 +92,7 @@ const TodoListItem = ({ id, deleteTodo, editTodo }) => {
       <ListItemSecondaryAction>
         <Grid container spacing={1}>
           <Grid item>
-            <DeleteIcon onClick={() => deleteTodo(id)} />
+            <DeleteIcon onClick={handleDeleteClick} />
           </Grid>
           <Grid item>
             {editing ? (
@@ -79,7 +102,7 @@ const TodoListItem = ({ id, deleteTodo, editTodo }) => {
             )}
           </Grid>
           <Grid item>
-            <DateFormDialog title={title} alerm={alerm} id={id} />
+            <DateFormDialog alerm={alerm} handleSetAlermClick={handleSetAlermClick} title={title}/>
           </Grid>
         </Grid>
       </ListItemSecondaryAction>
@@ -90,15 +113,9 @@ const TodoListItem = ({ id, deleteTodo, editTodo }) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     deleteTodo: (id) =>
-      dispatch({
-        type: 'DELETE_TODO',
-        payload: id,
-      }),
-    editTodo: (id, title) =>
-      dispatch({
-        type: 'EDIT_TODO',
-        payload: { id: id, title: title },
-      }),
+      dispatch(deleteTodo(id)),
+    editTodo: (todo) =>
+      dispatch(editTodo(todo)),
   };
 };
 

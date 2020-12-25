@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 
-import { toStringDatetime, setSecondsToZero } from '../../../../utility';
+import { toStringDatetime, setSecondsToZero } from '../../utility';
 
 import AlarmIcon from '@material-ui/icons/Alarm';
 import Button from '@material-ui/core/Button';
@@ -17,7 +17,7 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 
-const DateFormDialog = ({ title, alerm, id, toggleTodo }) => {
+const DateFormDialog = ({ title, alerm, id, handleSetAlermClick }) => {
   const [open, setOpen] = useState(false);
   const [isTimeSet, toggleIsTimeSet] = useState(false);
   const [alermTimeText, setAlermTimeText] = useState('');
@@ -34,20 +34,6 @@ const DateFormDialog = ({ title, alerm, id, toggleTodo }) => {
     setSelectedDate(date);
   };
 
-  const setAlerm = () => {
-    const content = { id: id, alerm: selectedDate };
-    toggleTodo(content);
-    const diff = selectedDate.getTime() - new Date().getTime();
-    if (diff > 0) {
-      setTimeout(() => {
-        alert(title);
-        toggleTodo(content);
-      }, diff);
-    } else {
-      toggleTodo(content);
-    }
-  };
-
   const handleSaveClick = (e) => {
     e.preventDefault();
     //close dropdown
@@ -55,8 +41,9 @@ const DateFormDialog = ({ title, alerm, id, toggleTodo }) => {
     if (selectedDate !== '') {
       toggleIsTimeSet(true);
       setSelectedDate(setSecondsToZero(selectedDate));
+      // convert datetime to string
       setAlermTimeText(toStringDatetime(selectedDate));
-      setAlerm();
+      handleSetAlermClick(selectedDate);
     } else {
       return;
     }
@@ -119,14 +106,4 @@ const DateFormDialog = ({ title, alerm, id, toggleTodo }) => {
   );
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    toggleTodo: (id, alerm) =>
-      dispatch({
-        type: 'TOGGLE_TODO',
-        payload: { id: id, alerm: alerm },
-      }),
-  };
-};
-
-export default connect(null, mapDispatchToProps)(DateFormDialog);
+export default connect(null, null)(DateFormDialog);

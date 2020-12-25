@@ -1,13 +1,26 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import React, {useEffect} from 'react';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { Provider } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
 import TodoListItem from './TodoListItem';
-import store from '../../../store';
+import store from '../../store';
+import { setTodo } from '../../actions/todo';
 
 import List from '@material-ui/core/List';
 
 const TodoList = ({ todoIds }) => {
+  const dispatch = useDispatch();
+  const { isLoggedIn } = useSelector((state) => state.auth);
+  
+  useEffect(() => {
+    if (isLoggedIn) {
+      dispatch(setTodo());
+    } else {
+      return <Redirect to='/login' />;
+    }
+  }, []);
+
   const renderedListItems = todoIds.map((todoId) => {
     return <TodoListItem key={todoId} id={todoId} />;
   });
