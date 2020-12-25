@@ -29,18 +29,7 @@ export const register = (username, email, password) => (dispatch) => AuthService
 );
 
 export const login = (username, password) => (dispatch) => AuthService.login(username, password).then(
-  (data) => {
-    dispatch({
-      type: LOGIN_SUCCESS,
-      payload: { user: data },
-    });
-    dispatch({
-      type: SET_TODO,
-      payload: data.todos,
-    });
-
-    return Promise.resolve();
-  },
+  (data) => Promise.resolve(),
   (error) => {
     const message = (error.response
           && error.response.data
