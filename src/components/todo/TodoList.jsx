@@ -9,16 +9,20 @@ import { setTodo } from '../../actions/todo';
 
 import List from '@material-ui/core/List';
 
-const TodoList = ({ todoIds }) => {
+const TodoList = ({ todoIds, setTodo }) => {
   const dispatch = useDispatch();
   const { isLoggedIn } = useSelector((state) => state.auth);
   
   useEffect(() => {
-    if (isLoggedIn) {
-      dispatch(setTodo());
-    } else {
-      return <Redirect to='/login' />;
-    }
+    let unmounted = false;
+    const f = async () => {
+      await setTodo();
+    };
+    f();
+    const cleanup = () => {
+      unmounted = true;
+    };
+    return cleanup;
   }, []);
 
   const renderedListItems = todoIds.map((todoId) => {
@@ -37,4 +41,10 @@ const mapStatetoProps = (state) => {
     todoIds: state.todo.map((todo) => todo.id),
   };
 };
-export default connect(mapStatetoProps, null)(TodoList);
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setTodo: () => dispatch(setTodo())
+  }
+}
+export default connect(mapStatetoProps, mapDispatchToProps)(TodoList);

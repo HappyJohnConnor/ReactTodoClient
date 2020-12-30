@@ -4,7 +4,7 @@ const API_URL = 'http://localhost:8080/api/todo/';
 const username = localStorage.getItem('username');
 
 const getAllTodos = () => {
-  const data = { createdBy: username };
+  const data = { createdBy: JSON.parse(localStorage.getItem('user')).username };
   const config = {
     method: 'get',
     url: `${API_URL}all`,

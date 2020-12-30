@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { useDispatch, useSelector, connect } from 'react-redux';
 
 import { login } from '../actions/auth';
 import { setTodo } from '../actions/todo';
+import { SET_MESSAGE } from '../actions/types';
 
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -52,7 +52,6 @@ const Login = (props) => {
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({ username: '', password: '' });
 
-  const { isLoggedIn } = useSelector((state) => state.auth);
   const { message } = useSelector((state) => state.message);
 
   const handleChange = (event) => {
@@ -66,14 +65,11 @@ const Login = (props) => {
         props.history.push('/home');
         window.location.reload();
       })
-      .catch(() => {
+      .catch((message) => {
+        props.setMessage(message);
         console.log('you failed in loging');
       });
   };
-
-  if (isLoggedIn) {
-    return <Redirect to="/" />;
-  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -145,4 +141,10 @@ const Login = (props) => {
   );
 };
 
-export default Login;
+const mapDispatchToProps = dispatch => {
+  return {
+    setMessage: (message) => dispatch({ type: SET_MESSAGE, message })
+  }
+}
+
+export default connect(null, mapDispatchToProps)(Login);

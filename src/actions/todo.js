@@ -17,13 +17,17 @@ export const setTodo = (username) => (dispatch) => ContentService.getAllTodos(us
       type: SET_TODO,
       payload: data,
     });
+    /*
     dispatch({
       type: LOGIN_SUCCESS,
       payload: { user: data },
-    });
+    });*/
     return Promise.resolve();
   },
   (error) => {
+    if (error.response.status === 401) {
+      
+    }
     const message = getErrorMsg(error);
     dispatch({ type: SET_MESSAGE, payload: message });
     dispatch({ type: LOGIN_FAIL });
