@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { BrowserRouter, Switch, withRouter } from 'react-router-dom';
+import { BrowserRouter, Switch, Route, withRouter } from 'react-router-dom';
 
 import AuthService from './services/auth.service';
 import AddForm from './components/todo/AddForm';
@@ -8,6 +8,7 @@ import TodoList from './components/todo/TodoList';
 import Login from './components/Login';
 import Register from './components/Register';
 import { PrivateRoute, GuestRoute } from './components/Routing';
+import ErrorBoudary from './ErrorBoundary';
 
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -32,7 +33,6 @@ const App = (props) => {
   const dispatch = useDispatch();
   const { message } = useSelector((state) => state.message);
   const { isLoggedIn, user } = useSelector((state) => state.auth);
-
   const handleProfile = () => {};
 
   const handleLogout = (e) => {
@@ -48,10 +48,12 @@ const App = (props) => {
 
   const Main = () => {
     return (
-      <div>
+      <ErrorBoudary>
         <AddForm className="Form" />
-        <TodoList />
-      </div>
+        <Suspense fallback={<div>Fetching data ... </div>}>
+          <TodoList />
+        </Suspense>
+      </ErrorBoudary>
     );
   };
 
@@ -63,7 +65,7 @@ const App = (props) => {
             <Typography variant="h6" className={classes.title}>
               Todo App
             </Typography>
-            {user ? <IsLoggedIn /> : <NotLoggedIn />}
+            {isLoggedIn ? <IsLoggedIn /> : <NotLoggedIn />}
           </Toolbar>
         </AppBar>
         {message && (
@@ -76,6 +78,7 @@ const App = (props) => {
   }
 
   const IsLoggedIn = () => {
+    console.log(user);
     return (
       <Typography>
         <Button color="inherit" onClick={handleProfile}>
@@ -108,7 +111,7 @@ const App = (props) => {
         <Switch>
           <PrivateRoute exact path={['/', '/home']} children={<Main />} />
           <GuestRoute exact path="/login" children={<Login />} />
-          <GuestRoute exact path="/register" children={<Register />} /> 
+          <Route exact path="/register" children={<Register />} /> 
         </Switch>
       </Container>
     </BrowserRouter>

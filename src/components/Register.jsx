@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+import { createBrowserHistory } from 'history';
 
 import { register } from '../actions/auth';
 
@@ -46,9 +47,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Register = (props) => {
+const Register = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const history = createBrowserHistory();
 
   const [formData, setFormData] = useState({
     email: '',
@@ -56,7 +58,6 @@ const Register = (props) => {
     username: '',
   });
 
-  const { isLoggedin } = useSelector((state) => state.auth);
   const { message } = useSelector((state) => state.message);
 
   const handleChange = (event) => {
@@ -67,7 +68,7 @@ const Register = (props) => {
     e.preventDefault();
     dispatch(register(formData.username, formData.email, formData.password))
       .then(() => {
-        props.history.push('/login');
+        history.push('/login');
         window.location.reload();
       })
       .catch(() => {});

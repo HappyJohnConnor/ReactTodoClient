@@ -1,22 +1,27 @@
-import React, {useEffect} from 'react';
-import { connect, useDispatch, useSelector } from 'react-redux';
+import React, {useEffect, useState} from 'react';
+import { connect, useSelector } from 'react-redux';
 import { Provider } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 import TodoListItem from './TodoListItem';
 import store from '../../store';
 import { setTodo } from '../../actions/todo';
+import { SET_MESSAGE, LOGOUT } from '../../actions/types';
 
 import List from '@material-ui/core/List';
 
-const TodoList = ({ todoIds, setTodo }) => {
-  const dispatch = useDispatch();
-  const { isLoggedIn } = useSelector((state) => state.auth);
-  
+const TodoList = ({ todoIds, setTodo, setMessage, logout }) => {
+
   useEffect(() => {
     let unmounted = false;
+    let data = null;
     const f = async () => {
-      await setTodo();
+      try {
+        data = await setTodo();
+      } catch(err) {
+        setMessage(err);
+        logout();
+      }
     };
     f();
     const cleanup = () => {
@@ -44,7 +49,9 @@ const mapStatetoProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setTodo: () => dispatch(setTodo())
+    setTodo: () => dispatch(setTodo()),
+    setMessage: (message) => dispatch({ type: SET_MESSAGE, payload: message }),
+    logout: () => dispatch({type: LOGOUT})
   }
 }
 export default connect(mapStatetoProps, mapDispatchToProps)(TodoList);
